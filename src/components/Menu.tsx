@@ -78,6 +78,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
   } = props
   const { startDate, endDate } = dateRange
   const [fromError, setFromError] = React.useState(false)
+  const [toError, setToError] = React.useState(false)
   const canNavigateCloser =
     differenceInCalendarMonths(secondMonth, firstMonth) >= 2
   function InputMaskCustom(props: any) {
@@ -100,7 +101,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
           moment(dateInput, 'DD/MM/YYYY').format()
         )
       ) {
-        return setFromError(true)
+        return start ? setFromError(true) : setToError(true)
       }
       setDateRange(
         start
@@ -113,6 +114,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
               endDate: moment(dateInput, 'DD/MM/YYYY').format()
             }
       )
+      return start ? setFromError(false) : setToError(false)
     }
   }
   function isCursorDone(position: any) {
@@ -172,6 +174,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
                       handleDateInput(target.value, false)
                     }
                   }}
+                  error={toError}
                   onBlur={(e) => handleDateInput(e.target.value, false)}
                   inputComponent={InputMaskCustom}
                 />
