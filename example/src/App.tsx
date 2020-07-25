@@ -25,6 +25,7 @@ export default function DateRangePickerStory() {
       <DateRangePicker
         // theme={theme}
         open={true}
+        elevation={0}
         definedRanges={[
           {
             label: 'Last 1 Day',

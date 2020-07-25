@@ -50,6 +50,7 @@ interface DateRangePickerProps {
   onChange: (dateRange: DateRange) => void
   past?: Boolean
   theme?: Theme
+  elevation?: number
 }
 
 const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
@@ -65,7 +66,8 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
     maxDate,
     definedRanges = defaultRanges,
     past,
-    theme = defaultTheme
+    theme = defaultTheme,
+    elevation
   } = props
 
   const minDateValid = parseOptionalDate(minDate, addYears(today, -10))
@@ -172,6 +174,7 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
   return open ? (
     <ThemeProvider theme={theme}>
       <Menu
+        elevation={elevation}
         dateRange={dateRange}
         minDate={minDateValid}
         maxDate={maxDateValid}

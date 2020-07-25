@@ -44,6 +44,7 @@ interface MenuProps extends WithStyles<typeof styles> {
   maxDate: Date
   firstMonth: Date
   secondMonth: Date
+  elevation?: number
   setFirstMonth: Setter<Date>
   setSecondMonth: Setter<Date>
   setDateRange: Setter<DateRange>
@@ -70,7 +71,8 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
     setSecondMonth,
     setDateRange,
     helpers,
-    handlers
+    handlers,
+    elevation = 5
   } = props
   const { startDate, endDate } = dateRange
   const canNavigateCloser =
@@ -78,7 +80,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
 
   const commonProps = { dateRange, minDate, maxDate, helpers, handlers }
   return (
-    <Paper className={classes.rootContainer} elevation={5} square>
+    <Paper className={classes.rootContainer} elevation={elevation} square>
       <Grid container direction='row' wrap='nowrap'>
         <Grid>
           <Grid container className={classes.header} alignItems='center'>
