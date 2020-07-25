@@ -69,6 +69,7 @@ export default function DateRangePickerStory() {
         ]}
         maxDate={addDays(new Date(), -1)}
         past={true}
+        dateInput={true}
         initialDateRange={{
           startDate: addDays(new Date(), -4),
           endDate: addDays(new Date(), -3)

@@ -7,18 +7,18 @@ import {
   createStyles,
   WithStyles,
   Theme,
-  withStyles
+  withStyles,
+  Input
 } from '@material-ui/core'
-import {
-  format,
-  differenceInCalendarMonths,
-  differenceInCalendarDays
-} from 'date-fns'
+import { format, differenceInCalendarMonths } from 'date-fns'
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 import Month from './Month'
 import DefinedRanges from './DefinedRanges'
 import { DateRange, DefinedRange, Setter, NavigationAction } from '../types'
 import { MARKERS } from '..'
+import { inDateRange } from '../utils'
+const InputMask = require('react-input-mask')
+const moment = require('moment')
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -45,6 +45,7 @@ interface MenuProps extends WithStyles<typeof styles> {
   firstMonth: Date
   secondMonth: Date
   elevation?: number
+  dateInput?: Boolean
   setFirstMonth: Setter<Date>
   setSecondMonth: Setter<Date>
   setDateRange: Setter<DateRange>
@@ -72,30 +73,113 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
     setDateRange,
     helpers,
     handlers,
-    elevation = 5
+    elevation = 5,
+    dateInput = false
   } = props
   const { startDate, endDate } = dateRange
+  const [fromError, setFromError] = React.useState(false)
   const canNavigateCloser =
     differenceInCalendarMonths(secondMonth, firstMonth) >= 2
-
+  function InputMaskCustom(props: any) {
+    return (
+      <InputMask
+        style={{ textAlign: 'center' }}
+        mask='99 / 99 / 9999'
+        maskPlaceholder={' '}
+        alwaysShowMask={false}
+        {...props}
+      />
+    )
+  }
   const commonProps = { dateRange, minDate, maxDate, helpers, handlers }
+  function handleDateInput(dateInput: string, start: boolean) {
+    if (moment(dateInput, 'DD/MM/YYYY').isValid()) {
+      if (
+        !inDateRange(
+          { startDate: minDate, endDate: endDate },
+          moment(dateInput, 'DD/MM/YYYY').format()
+        )
+      ) {
+        return setFromError(true)
+      }
+      setDateRange(
+        start
+          ? {
+              endDate,
+              startDate: moment(dateInput, 'DD/MM/YYYY').format()
+            }
+          : {
+              startDate,
+              endDate: moment(dateInput, 'DD/MM/YYYY').format()
+            }
+      )
+    }
+  }
+  function isCursorDone(position: any) {
+    return position === 5 || position === 10 || position === 14
+  }
   return (
     <Paper className={classes.rootContainer} elevation={elevation} square>
       <Grid container direction='row' wrap='nowrap'>
         <Grid>
           <Grid container className={classes.header} alignItems='center'>
             <Grid item className={classes.headerItem}>
-              <Typography variant='subtitle1'>
-                {startDate ? format(startDate, 'MMMM DD, YYYY') : 'Start Date'}
-              </Typography>
+              {dateInput ? (
+                <Input
+                  defaultValue={
+                    startDate ? format(startDate, 'DD/MM/YYYY') : 'Start Date'
+                  }
+                  onChange={(e) =>
+                    isCursorDone(e.target.selectionEnd) &&
+                    handleDateInput(e.target.value, true)
+                  }
+                  type='tel'
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      const target = e.currentTarget as HTMLInputElement
+                      handleDateInput(target.value, true)
+                    }
+                  }}
+                  onBlur={(e) => handleDateInput(e.target.value, true)}
+                  error={fromError}
+                  inputComponent={InputMaskCustom}
+                />
+              ) : (
+                <Typography variant='subtitle1'>
+                  {startDate
+                    ? format(startDate, 'MMMM DD, YYYY')
+                    : 'Start Date'}
+                </Typography>
+              )}
             </Grid>
             <Grid item className={classes.headerItem}>
               <ArrowRightAlt color='action' />
             </Grid>
             <Grid item className={classes.headerItem}>
-              <Typography variant='subtitle1'>
-                {endDate ? format(endDate, 'MMMM DD, YYYY') : 'End Date'}
-              </Typography>
+              {dateInput ? (
+                <Input
+                  defaultValue={
+                    endDate ? format(endDate, 'DD/MM/YYYY') : 'End Date'
+                  }
+                  type='tel'
+                  onChange={(e) =>
+                    isCursorDone(e.target.selectionEnd) &&
+                    handleDateInput(e.target.value, false)
+                  }
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      const target = e.currentTarget as HTMLInputElement
+                      handleDateInput(target.value, false)
+                    }
+                  }}
+                  onBlur={(e) => handleDateInput(e.target.value, false)}
+                  inputComponent={InputMaskCustom}
+                />
+              ) : (
+                <Typography variant='subtitle1'>
+                  {endDate ? format(endDate, 'MMMM DD, YYYY') : 'Start Date'}
+                </Typography>
+              )}
             </Grid>
           </Grid>
           <Divider />
