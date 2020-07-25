@@ -13,7 +13,6 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: '#ff0000',
-      dark: '#ff0000'
     }
   }
 })
@@ -23,7 +22,7 @@ export default function DateRangePickerStory() {
   return (
     <ThemeProvider theme={theme}>
       <DateRangePicker
-        // theme={theme}
+        theme={theme}
         open={true}
         elevation={0}
         definedRanges={[

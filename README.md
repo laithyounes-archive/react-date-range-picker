@@ -7,21 +7,32 @@
 ## Install
 
 ```bash
-npm install --save react-date-range-picker
+npm install --save op-react-date-range-picker
 ```
 
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
 
-import MyComponent from 'react-date-range-picker'
+import { DateRangePicker } from 'react-date-range-picker'
 import 'react-date-range-picker/dist/index.css'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+function Example() {
+  return (
+      <DateRangePicker
+        theme={theme}
+        open={true}
+        elevation={3}
+        maxDate={addDays(new Date(), -1)}
+        past={true}
+        initialDateRange={{
+          startDate: addDays(new Date(), -4),
+          endDate: addDays(new Date(), -3)
+        }}
+        onChange={(dateRange) => console.log(dateRange)}
+      />
+  )
 }
 ```
 
