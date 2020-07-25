@@ -75,9 +75,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
   const { startDate, endDate } = dateRange
   const canNavigateCloser =
     differenceInCalendarMonths(secondMonth, firstMonth) >= 2
-  const canNavigateToNext =
-    differenceInCalendarDays(secondMonth, new Date()) > 1
-  console.log({ canNavigateToNext })
+
   const commonProps = { dateRange, minDate, maxDate, helpers, handlers }
   return (
     <Paper className={classes.rootContainer} elevation={5} square>

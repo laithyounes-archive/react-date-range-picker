@@ -10,11 +10,14 @@ import {
   max,
   min
 } from 'date-fns'
+import { Theme } from '@material-ui/core'
 import { DateRange, NavigationAction, DefinedRange } from './types'
 import Menu from './components/Menu'
 import { defaultRanges } from './defaults'
 import { parseOptionalDate } from './utils'
-// import styles from './styles.module.css'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+
+const defaultTheme = createMuiTheme({})
 
 type Marker = symbol
 
@@ -45,7 +48,8 @@ interface DateRangePickerProps {
   minDate?: Date | string
   maxDate?: Date | string
   onChange: (dateRange: DateRange) => void
-  past: Boolean
+  past?: Boolean
+  theme?: Theme
 }
 
 const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
@@ -60,7 +64,8 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
     minDate,
     maxDate,
     definedRanges = defaultRanges,
-    past
+    past,
+    theme = defaultTheme
   } = props
 
   const minDateValid = parseOptionalDate(minDate, addYears(today, -10))
@@ -165,21 +170,25 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
   }
 
   return open ? (
-    <Menu
-      dateRange={dateRange}
-      minDate={minDateValid}
-      maxDate={maxDateValid}
-      ranges={definedRanges}
-      firstMonth={firstMonth}
-      secondMonth={secondMonth}
-      setFirstMonth={setFirstMonthValidated}
-      setSecondMonth={setSecondMonthValidated}
-      setDateRange={setDateRangeValidated}
-      helpers={helpers}
-      handlers={handlers}
-    />
+    <ThemeProvider theme={theme}>
+      <Menu
+        dateRange={dateRange}
+        minDate={minDateValid}
+        maxDate={maxDateValid}
+        ranges={definedRanges}
+        firstMonth={firstMonth}
+        secondMonth={secondMonth}
+        setFirstMonth={setFirstMonthValidated}
+        setSecondMonth={setSecondMonthValidated}
+        setDateRange={setDateRangeValidated}
+        helpers={helpers}
+        handlers={handlers}
+      />
+    </ThemeProvider>
   ) : null
 }
 
-export { DateRange, DefinedRange } from './types'
+export type DateRangeType = DateRange
+export type DefinedRangeType = DefinedRange
+
 export const DateRangePicker = DateRangePickerImpl

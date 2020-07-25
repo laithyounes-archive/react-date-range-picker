@@ -1,13 +1,6 @@
 import * as React from 'react'
-import {
-  Paper,
-  Grid,
-  Typography,
-  createStyles,
-  Theme,
-  WithStyles,
-  withStyles
-} from '@material-ui/core'
+import { Paper, Grid, Typography, Theme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { getDate, isSameMonth, isToday, format, isWithinRange } from 'date-fns'
 import {
   chunks,
@@ -23,25 +16,24 @@ import { NavigationAction, DateRange } from '../types'
 
 const WEEK_DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      width: 290
-    },
-    weekDaysContainer: {
-      marginTop: 10,
-      paddingLeft: 30,
-      paddingRight: 30
-    },
-    daysContainer: {
-      paddingLeft: 15,
-      paddingRight: 15,
-      marginTop: 15,
-      marginBottom: 20
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    width: 290
+  },
+  weekDaysContainer: {
+    marginTop: 10,
+    paddingLeft: 30,
+    paddingRight: 30
+  },
+  daysContainer: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: 15,
+    marginBottom: 20
+  }
+}))
 
-interface MonthProps extends WithStyles<typeof styles> {
+interface MonthProps {
   value: Date
   marker: symbol
   dateRange: DateRange
@@ -61,7 +53,6 @@ interface MonthProps extends WithStyles<typeof styles> {
 
 const Month: React.FunctionComponent<MonthProps> = (props) => {
   const {
-    classes,
     helpers,
     handlers,
     value: date,
@@ -73,6 +64,7 @@ const Month: React.FunctionComponent<MonthProps> = (props) => {
   } = props
 
   const [back, forward] = props.navState
+  const classes = useStyles()
   return (
     <Paper square elevation={0} className={classes.root}>
       <Grid container>
@@ -145,4 +137,4 @@ const Month: React.FunctionComponent<MonthProps> = (props) => {
   )
 }
 
-export default withStyles(styles)(Month)
+export default Month

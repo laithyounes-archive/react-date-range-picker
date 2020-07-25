@@ -1,15 +1,44 @@
-import * as React from 'react'
-import {
-  IconButton,
-  Typography,
-  createStyles,
-  Theme,
-  WithStyles,
-  withStyles
-} from '@material-ui/core'
+import React from 'react'
+import { IconButton, Typography, Theme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { combine } from '../utils'
 
-interface DayProps extends WithStyles<typeof styles> {
+const useStyles = makeStyles((theme: Theme) => ({
+  leftBorderRadius: {
+    borderRadius: '50% 0 0 50%'
+  },
+  rightBorderRadius: {
+    borderRadius: '0 50% 50% 0'
+  },
+  buttonContainer: {
+    display: 'flex'
+  },
+  button: {
+    height: 36,
+    width: 36,
+    padding: 0
+  },
+  buttonText: {
+    lineHeight: 1.6
+  },
+  outlined: {
+    border: `1px solid ${theme.palette.primary.dark}`
+  },
+  filled: {
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark
+    },
+    backgroundColor: theme.palette.primary.dark
+  },
+  highlighted: {
+    backgroundColor: theme.palette.action.hover
+  },
+  contrast: {
+    color: theme.palette.primary.contrastText
+  }
+}))
+
+interface DayProps {
   filled?: boolean
   outlined?: boolean
   highlighted?: boolean
@@ -21,44 +50,8 @@ interface DayProps extends WithStyles<typeof styles> {
   value: number | string
 }
 
-const styles = (theme: Theme) =>
-  createStyles({
-    leftBorderRadius: {
-      borderRadius: '50% 0 0 50%'
-    },
-    rightBorderRadius: {
-      borderRadius: '0 50% 50% 0'
-    },
-    buttonContainer: {
-      display: 'flex'
-    },
-    button: {
-      height: 36,
-      width: 36,
-      padding: 0
-    },
-    buttonText: {
-      lineHeight: 1.6
-    },
-    outlined: {
-      border: `1px solid ${theme.palette.primary.dark}`
-    },
-    filled: {
-      '&:hover': {
-        backgroundColor: theme.palette.primary.dark
-      },
-      backgroundColor: theme.palette.primary.dark
-    },
-    highlighted: {
-      backgroundColor: theme.palette.action.hover
-    },
-    contrast: {
-      color: theme.palette.primary.contrastText
-    }
-  })
-
 const Day: React.FunctionComponent<DayProps> = (props) => {
-  const { classes } = props
+  const classes = useStyles()
   return (
     <div
       className={combine(
@@ -79,7 +72,7 @@ const Day: React.FunctionComponent<DayProps> = (props) => {
         onMouseOver={props.onHover}
       >
         <Typography
-          color={!props.disabled ? 'default' : 'textSecondary'}
+          color={!props.disabled ? 'initial' : 'textSecondary'}
           className={combine(
             classes.buttonText,
             !props.disabled && props.filled && classes.contrast
@@ -93,4 +86,4 @@ const Day: React.FunctionComponent<DayProps> = (props) => {
   )
 }
 
-export default withStyles(styles)(Day)
+export default Day
