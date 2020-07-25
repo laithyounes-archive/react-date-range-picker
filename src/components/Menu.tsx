@@ -116,6 +116,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
       )
       return start ? setFromError(false) : setToError(false)
     }
+    return start ? setFromError(true) : setToError(true)
   }
   function isCursorDone(position: any) {
     return position === 5 || position === 10 || position === 14

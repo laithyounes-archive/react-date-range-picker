@@ -12,7 +12,7 @@ import 'react-date-range-picker/dist/index.css'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#ff0000',
+      main: '#00ff00',
     }
   }
 })
