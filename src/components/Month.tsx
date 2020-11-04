@@ -71,8 +71,8 @@ const Month: React.FunctionComponent<MonthProps> = (props) => {
         <Header
           date={date}
           setDate={setDate}
-          nextDisabled={!forward}
-          prevDisabled={!back}
+          nextDisabled={false}
+          prevDisabled={false}
           onClickPrevious={() =>
             handlers.onMonthNavigate(marker, NavigationAction.Previous)
           }

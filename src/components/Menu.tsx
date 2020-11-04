@@ -192,7 +192,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
               {...commonProps}
               value={firstMonth}
               setValue={setFirstMonth}
-              navState={[true, canNavigateCloser]}
+              navState={[true, true]}
               marker={MARKERS.FIRST_MONTH}
             />
             <div className={classes.divider} />
@@ -200,7 +200,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
               {...commonProps}
               value={secondMonth}
               setValue={setSecondMonth}
-              navState={[canNavigateCloser, true]}
+              navState={[true, true]}
               marker={MARKERS.SECOND_MONTH}
             />
           </Grid>
