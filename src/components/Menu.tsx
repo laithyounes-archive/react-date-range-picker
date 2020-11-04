@@ -57,6 +57,7 @@ interface MenuProps extends WithStyles<typeof styles> {
     onDayHover: (day: Date) => void
     onMonthNavigate: (marker: symbol, action: NavigationAction) => void
   }
+  onSingleDayClick: (day: Date, isFirst: Boolean) => void
 }
 
 const Menu: React.FunctionComponent<MenuProps> = (props) => {
@@ -74,7 +75,8 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
     helpers,
     handlers,
     elevation = 5,
-    dateInput = false
+    dateInput = false,
+    onSingleDayClick
   } = props
   const { startDate, endDate } = dateRange
   const [fromError, setFromError] = React.useState(false)
@@ -190,17 +192,25 @@ const Menu: React.FunctionComponent<MenuProps> = (props) => {
           <Grid container direction='row' justify='center' wrap='nowrap'>
             <Month
               {...commonProps}
+              handlers={{
+                ...handlers,
+                onDayClick: (day) => onSingleDayClick(day, true)
+              }}
               value={firstMonth}
               setValue={setFirstMonth}
-              navState={[true, canNavigateCloser]}
+              navState={[true, true]}
               marker={MARKERS.FIRST_MONTH}
             />
             <div className={classes.divider} />
             <Month
               {...commonProps}
+              handlers={{
+                ...handlers,
+                onDayClick: (day) => onSingleDayClick(day, false)
+              }}
               value={secondMonth}
               setValue={setSecondMonth}
-              navState={[canNavigateCloser, true]}
+              navState={[true, true]}
               marker={MARKERS.SECOND_MONTH}
             />
           </Grid>

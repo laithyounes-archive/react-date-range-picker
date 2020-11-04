@@ -136,13 +136,21 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
     setHoverDay(day)
   }
 
+  const onSingleDayClick = (day: Date, isFirst: Boolean) => {
+    if (isFirst) {
+      setDateRange({ startDate: day, endDate: endDate })
+    } else {
+      setDateRange({ startDate: startDate, endDate: day })
+    }
+  }
+
   const onMonthNavigate = (marker: Marker, action: NavigationAction) => {
     if (marker == MARKERS.FIRST_MONTH) {
       const firstNew = addMonths(firstMonth, action)
-      if (isBefore(firstNew, secondMonth)) setFirstMonth(firstNew)
+      setFirstMonth(firstNew)
     } else {
       const secondNew = addMonths(secondMonth, action)
-      if (isBefore(firstMonth, secondNew)) setSecondMonth(secondNew)
+      setSecondMonth(secondNew)
     }
   }
 
@@ -176,6 +184,7 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
   return open ? (
     <ThemeProvider theme={theme}>
       <Menu
+        onSingleDayClick={onSingleDayClick}
         dateInput={dateInput}
         elevation={elevation}
         dateRange={dateRange}
