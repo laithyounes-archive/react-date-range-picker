@@ -41,12 +41,16 @@ export const isStartOfRange = ({ startDate }: DateRange, day: Date) =>
 export const isEndOfRange = ({ endDate }: DateRange, day: Date) =>
   (endDate && isSameDay(day, endDate)) as boolean
 
-export const inDateRange = ({ startDate, endDate }: DateRange, day: Date) =>
-  (startDate &&
+export const inDateRange = ({ startDate, endDate }: DateRange, day: Date) => {
+  if(new Date((endDate || '')).getTime() < new Date((startDate || '')).getTime()){
+    return false;
+  }
+  return (startDate &&
     endDate &&
     (isWithinRange(day, startDate, endDate) ||
       isSameDay(day, startDate) ||
       isSameDay(day, endDate))) as boolean
+  }
 
 export const isRangeSameDay = ({ startDate, endDate }: DateRange) => {
   if (startDate && endDate) {
