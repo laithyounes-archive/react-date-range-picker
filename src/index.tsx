@@ -137,7 +137,9 @@ const DateRangePickerImpl: React.FunctionComponent<DateRangePickerProps> = (
   }
 
   const onSingleDayClick = (day: Date, isFirst: Boolean) => {
-    if (isFirst) {
+    if(!isFirst && new Date((day || '')).getTime() < new Date((startDate || '')).getTime()){
+      return null;
+    } else if (isFirst) {
       setDateRange({ startDate: day, endDate: endDate })
     } else {
       setDateRange({ startDate: startDate, endDate: day })
